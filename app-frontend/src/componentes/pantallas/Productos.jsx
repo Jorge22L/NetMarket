@@ -2,10 +2,15 @@ import { Avatar, Button, Card, CardContent, CardMedia, Container, Grid, Typograp
 import useStyles from '../../theme/useStyles';
 import React from 'react';
 import { ProductoArray } from '../data/data_prueba';
+import { useNavigate } from 'react-router-dom';
 
-const Productos = () => {
+const Productos = (props) => {
+    const navigate = useNavigate();
     const classes = useStyles();
     const miArray = ProductoArray;
+    const verProducto = (id) => {
+        navigate(`/detalleProducto/${id}`);
+    }
 
     return (
         <Container className={classes.containermt}>
@@ -26,7 +31,11 @@ const Productos = () => {
                             <Typography variant='h5' className={classes.text_card}>
                                 {data.titulo}
                             </Typography>
-                            <Button variant='contained' color='primary' fullWidth>
+                            <Button 
+                                variant='contained' 
+                                color='primary' 
+                                fullWidth
+                                onClick={() => verProducto(data.key)}>
                                 Más detalles
                             </Button>
                         </CardContent>

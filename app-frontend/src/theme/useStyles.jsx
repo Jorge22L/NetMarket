@@ -118,6 +118,32 @@ const useStyles = makeStyles({
         float: 'right',
         padding: '0px 20px 0px 20px',
         backgroundColor: "#0f80aa"
+    },
+    PaperImg: {
+        backgroundColor: '#f2f2f2',
+    },
+    mediaDetalle:{
+        width: 380,
+        height: 380,
+        margin: "auto"
+    },
+    text_detalle:{
+        fontWeight: '500',
+        color: '#fff',
+        marginBottom: 5
+    },
+    imgProductoCC:{
+        backgroundColor: '#f2f2f2',
+        width: 80,
+        height: 70
+    },
+    paperPadding:{
+        padding: 20
+    },
+    text_carrito:{
+        fontWeight: '600',
+        color: '#000',
+        marginBottom: '10px'
     }
 })
 
