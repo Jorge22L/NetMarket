@@ -8,6 +8,9 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Productos from './componentes/pantallas/Productos'
 import DetalleProducto from './componentes/pantallas/DetalleProducto'
 import CarritoCompras from './componentes/pantallas/CarritoCompras'
+import ProcesoCompra from './componentes/pantallas/ProcesoCompra'
+import OrdenCompra from './componentes/pantallas/OrdenCompra'
+import Perfil from './componentes/seguridad/Perfil'
 
 function App() {
 
@@ -21,6 +24,9 @@ function App() {
           <Route exact path='/' element={<Productos />} />
           <Route exact path='/detalleProducto/:id' element={<DetalleProducto />} />
           <Route exact path='/carrito' element={<CarritoCompras />} />
+          <Route exact path='/procesoCompra' element={<ProcesoCompra />} />
+          <Route exact path='/ordenCompra/:id' element={<OrdenCompra />} />
+          <Route exact path='/perfil' element={<Perfil />} />
         </Routes>
       </Router>
     </ThemeProvider>

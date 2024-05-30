@@ -25,6 +25,10 @@ const useStyles = makeStyles({
     gridmb: {
         marginBottom: '20px !important'
     },
+    gridmbOrden: {
+        marginBottom: '20px !important',
+        backgroundColor: '#f2f2f2',
+    },
     link: {
         marginTop: '8px !important',
         fontSize: "1.1rem !important",
@@ -37,6 +41,13 @@ const useStyles = makeStyles({
         paddingTop: '8px !important',
         paddingBottom: '8px !important',
         backgroundColor: '#430B86 !important'
+    },
+    appBarDesktop: {
+        paddingTop: '0px !important',
+        paddingBottom: '8px !important',
+        backgroundColor: '#430B86 !important',
+        color: '#fff !important',
+        textDecoration: "none !important",
     },
     grow: {
         flexGrow: 0,
@@ -53,6 +64,10 @@ const useStyles = makeStyles({
         textDecoration: "none",
     },
     mr: {
+        marginRight: '3px !important'
+    },
+    adminBar:{
+        marginTop: '-10px !important',
         marginRight: '3px !important'
     },
     buttonIcon: {
@@ -93,6 +108,7 @@ const useStyles = makeStyles({
         }
     },
     sectionMobile: {
+        marginTop: '-8px !important',
         display: 'flex',
         [theme.breakpoints.up('md')]: {
             display: 'none',
@@ -100,7 +116,7 @@ const useStyles = makeStyles({
     },
 
     text_title: {
-        fontWeight: '600',
+        fontWeight: '600 !important',
         color: '#fff',
         marginBottom: '10px'
     },
@@ -140,10 +156,91 @@ const useStyles = makeStyles({
     paperPadding:{
         padding: 20
     },
+    paperPaddingOrden:{
+        marginTop: "20px !important",
+        padding: 20,
+        backgroundColor: '#f2f2f2'
+    },
     text_carrito:{
         fontWeight: '600',
         color: '#000',
         marginBottom: '10px'
+    },
+    gridPC : {
+        margin: 'auto',
+        marginTop: 20,
+        backgroundColor: '#f2f2f2',
+        color: '#000',
+        padding: 20
+    },
+    buttonAnterior:{
+        marginRight: "8px !important",
+    },
+    formControl:{
+        margin: 12
+    },
+    gridLR:{
+        paddingLeft: 30,
+        paddingBottom: 20,
+        paddingRight: 30
+    },
+    divider : {
+        marginTop:12,
+        marginBottom:12
+    },
+    imgProductoPC : {
+        backgroundColor: "#f2f2f2",
+        width: 50,
+        height:40,
+    },
+    text_envio : {
+        lineHeight: 3
+    },
+    alertNotDelivered : {
+        marginTop: 5,
+        padding: "15px 15px 15px 15px",
+        marginBottom: 20,
+        backgroundColor: "#d98d8d",
+    },
+    alertDelivered :{
+        marginTop: 5,
+        padding: "15px 15px 15px 15px",
+        marginBottom: 20,
+        backgroundColor: "#9bc190",
+        color: "#0f80aa"
+    },
+    imageUploader : {
+        padding: 0,
+        margin: "-25px auto 15px",
+        width: 0
+    },
+    avatarPerfil : {
+        width: 130,
+        height: 130,
+        backgroundColor: "#0f80aa"
+    },
+    perfilSection:{
+        backgroundColor: "#f2f2f2",
+        marginTop: 30
+    },
+    table: {
+        border: "1px solid #e0e0e0",
+
+    },
+    iconDelivered : {
+        color: "#9bc190",
+        fontWeight: "900 !important",
+    },
+    iconNotDelivered : {
+        color: "#d98d8d",
+        fontWeight: "900 !important",
+    },
+    avatarPerfilAppBar : {
+        marginRight: 8,
+        backgroundColor: "#f2f2f2",
+    },
+    listSubItem : {
+        padding: "0 0 0 30px",
     }
 })
 

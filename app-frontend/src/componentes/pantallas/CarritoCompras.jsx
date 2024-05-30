@@ -3,9 +3,14 @@ import useStyles from '../../theme/useStyles';
 import { Button, CardMedia, Container, Divider, Grid, Icon, IconButton, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from '@mui/material';
 import { ProductoArray } from '../data/data_prueba';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useNavigate } from 'react-router-dom';
 
 const CarritoCompras = () => {
     const classes = useStyles();
+    const navigate = useNavigate();
+    const realizarCompra = () => {
+        navigate('/procesoCompra');
+    }
     const miArray = ProductoArray;
     return (
         <Container className={classes.containermt}>
@@ -66,17 +71,24 @@ const CarritoCompras = () => {
                     
                 </Grid>
                 <Grid item lg={3} md={2} sm={6} xs={12}>
-                        <Paper variant='outlined' square className={classes.paperPadding}>
-                            <Typography variant='h6' className={classes.text_carrito}>
-                                SubTotal ({miArray.length}) Productos
-                            </Typography>
-                            <Typography>
-                                $143.66
-                            </Typography>
-                            <Divider className={classes.gridmb} />
-                            <Button variant='contained' color='primary' size='large'>Realizar Compra</Button>
-                        </Paper>
-                    </Grid>
+                    <Paper variant='outlined' square className={classes.paperPadding}>
+                        <Typography variant='h6' className={classes.text_carrito}>
+                            SubTotal ({miArray.length}) Productos
+                        </Typography>
+                        <Typography>
+                            $143.66
+                        </Typography>
+                        <Divider className={classes.gridmb} />
+                        <Button 
+                            variant='contained' 
+                            color='primary' 
+                            size='large'
+                            onClick={realizarCompra}
+                            >
+                                Realizar Compra
+                        </Button>
+                    </Paper>
+                </Grid>
             </Grid>
         </Container>
     );

@@ -5,12 +5,18 @@ import MenuIcon from '@mui/icons-material/Menu';
 import React, { useState } from 'react';
 import useStyles from '../../theme/useStyles';
 import { Link as RouterLink } from 'react-router-dom';
+import MenuCliente from './Desktop/MenuCliente';
+import MenuAdmin from './Desktop/MenuAdmin';
+import MenuMobile from './mobile/MenuMobile';
 
 const MenuAppBar = () => {
     const [open, setOpen] = useState(false);
     const classes = useStyles();
 
     const openToggle = () => {
+        setOpen(!open);
+    }
+    const closeToggle = () => {
         setOpen(!open);
     }
     return ( 
@@ -29,30 +35,33 @@ const MenuAppBar = () => {
                         >
                             <div className={classes.list}>
                                 <List>
-                                    <ListItemButton onClick={openToggle} className={classes.listItem}>
+                                    {/* <ListItemButton onClick={openToggle} className={classes.listItem}>
                                         <RouterLink to={'/login'} color='inherit' className={classes.linkAppBarMobile} underline='none'>
                                             <ListItemIcon className={classes.listItemIcon}>
                                                 <Icon><PersonIcon/></Icon>
                                             </ListItemIcon>
                                             <ListItemText>Login</ListItemText>
                                         </RouterLink>
-                                    </ListItemButton>
+                                    </ListItemButton> */}
+                                    <MenuMobile clickHandler={closeToggle} />
                                 </List>
                             </div>
                         </Drawer>
                         <div className={classes.grow}>
                             <RouterLink to={'/'} color="inherit" className={classes.linkAppBarLogo} underline="none">
-                                <Icon className={classes.mr} fontSize="large"><StoreIcon/></Icon>
+                                <Icon className={classes.appBarDesktop} fontSize="large"><StoreIcon/></Icon>
                                 <Typography variant="h5">NetMarket</Typography>
                             </RouterLink>
                         </div>
                         <div className={classes.sectionDesktop}>
-                            <Button color='inherit' className={classes.buttonIcon}>
+                            {/* <Button color='inherit' className={classes.buttonIcon}>
                                 <RouterLink to={'/login'} className={classes.linkAppBarDesktop} href="/login" color="inherit" underline="none">
                                     <Icon className={classes.mr}><PersonIcon/></Icon>
                                     Login
                                 </RouterLink>
-                            </Button>
+                            </Button> */}
+                            <MenuCliente />
+                            <MenuAdmin />
                         </div>
                     </Toolbar>
                 </Container>
