@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import Login from './componentes/seguridad/Login'
 import { ThemeProvider } from '@emotion/react'
 import theme from './theme/theme'
@@ -11,6 +10,13 @@ import CarritoCompras from './componentes/pantallas/CarritoCompras'
 import ProcesoCompra from './componentes/pantallas/ProcesoCompra'
 import OrdenCompra from './componentes/pantallas/OrdenCompra'
 import Perfil from './componentes/seguridad/Perfil'
+import Usuarios from './componentes/pantallas/admin/Usuarios'
+import EditarUsuario from './componentes/pantallas/admin/EditarUsuario';
+import ListaProductos from './componentes/pantallas/admin/ListaProductos'
+import AgregarProducto from './componentes/pantallas/admin/AgregarProducto'
+import EditarProducto from './componentes/pantallas/admin/EditarProducto'
+import ListaPedidos from './componentes/pantallas/admin/ListaPedidos'
+
 
 function App() {
 
@@ -27,6 +33,12 @@ function App() {
           <Route exact path='/procesoCompra' element={<ProcesoCompra />} />
           <Route exact path='/ordenCompra/:id' element={<OrdenCompra />} />
           <Route exact path='/perfil' element={<Perfil />} />
+          <Route exact path='/admin/usuarios' element={<Usuarios />} />
+          <Route exact path='/admin/usuarios/:id' element={<EditarUsuario />} />
+          <Route exact path='/admin/listaProductos' element={<ListaProductos />} />
+          <Route exact path='/admin/agregarProducto' element={<AgregarProducto />} />
+          <Route exact path='/admin/editarProducto/:id' element={<EditarProducto />} />
+          <Route exact path='/admin/listaPedidos' element={<ListaPedidos />} />
         </Routes>
       </Router>
     </ThemeProvider>

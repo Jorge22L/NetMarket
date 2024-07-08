@@ -7,6 +7,13 @@ const useStyles = makeStyles({
     containermt: {
         marginTop: 30
     },
+    containermt_white: {
+        marginTop: "30px !important",
+        paddingTop: "30px !important",
+        backgroundColor: '#f2f2f2',
+        paddingBottom: "30px !important",
+        
+    },
     card: {
         padding: 30
     },
@@ -17,6 +24,9 @@ const useStyles = makeStyles({
     },
     icon: {
         fontSize: '26px !important',
+    },
+    iconSize: {
+        paddingBottom: '4px !important',
     },
     form: {
         marginTop: 40,
@@ -114,7 +124,6 @@ const useStyles = makeStyles({
             display: 'none',
         }
     },
-
     text_title: {
         fontWeight: '600 !important',
         color: '#fff',
@@ -241,6 +250,21 @@ const useStyles = makeStyles({
     },
     listSubItem : {
         padding: "0 0 0 30px",
+    },
+    checkbox: {
+        display: "block !important",
+        padding: "0px !important",
+        marginTop: "5px !important",
+        marginBottom: "5px !important",
+    },
+    buttonAgregar : {
+        float: "right !important",
+
+    },
+    avatarProducto: {
+        width: "175px !important",
+        height: "175px !important",
+        backgroundColor: "#0f80aa"
     }
 })
 

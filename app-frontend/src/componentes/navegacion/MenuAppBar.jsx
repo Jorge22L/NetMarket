@@ -1,13 +1,14 @@
-import { AppBar, Button, Container, Drawer, Icon, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material';
+import { AppBar, Container, Drawer, Icon, IconButton, List, Toolbar, Typography } from '@mui/material';
 import StoreIcon from '@mui/icons-material/Store';
-import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import useStyles from '../../theme/useStyles';
 import { Link as RouterLink } from 'react-router-dom';
 import MenuCliente from './Desktop/MenuCliente';
 import MenuAdmin from './Desktop/MenuAdmin';
 import MenuMobile from './mobile/MenuMobile';
+import MenuMobilePublic from './mobile/MenuMobilePublic';
+import MenuPublic from './Desktop/MenuPublic';
 
 const MenuAppBar = () => {
     const [open, setOpen] = useState(false);
@@ -35,14 +36,7 @@ const MenuAppBar = () => {
                         >
                             <div className={classes.list}>
                                 <List>
-                                    {/* <ListItemButton onClick={openToggle} className={classes.listItem}>
-                                        <RouterLink to={'/login'} color='inherit' className={classes.linkAppBarMobile} underline='none'>
-                                            <ListItemIcon className={classes.listItemIcon}>
-                                                <Icon><PersonIcon/></Icon>
-                                            </ListItemIcon>
-                                            <ListItemText>Login</ListItemText>
-                                        </RouterLink>
-                                    </ListItemButton> */}
+                                    {/* <MenuMobilePublic openToggle={closeToggle} /> */}
                                     <MenuMobile clickHandler={closeToggle} />
                                 </List>
                             </div>
@@ -54,12 +48,7 @@ const MenuAppBar = () => {
                             </RouterLink>
                         </div>
                         <div className={classes.sectionDesktop}>
-                            {/* <Button color='inherit' className={classes.buttonIcon}>
-                                <RouterLink to={'/login'} className={classes.linkAppBarDesktop} href="/login" color="inherit" underline="none">
-                                    <Icon className={classes.mr}><PersonIcon/></Icon>
-                                    Login
-                                </RouterLink>
-                            </Button> */}
+                            {/* <MenuPublic /> */}
                             <MenuCliente />
                             <MenuAdmin />
                         </div>

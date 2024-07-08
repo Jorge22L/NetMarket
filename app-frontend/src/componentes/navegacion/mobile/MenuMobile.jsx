@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import useStyles from '../../../theme/useStyles';
 import { Avatar, Collapse, Divider, Icon, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { AdminPanelSettings, ExitToApp, Group, KeyboardArrowDown, Person, ShoppingCart, Storefront } from '@mui/icons-material';
@@ -64,7 +64,7 @@ const MenuMobile = ({ clickHandler }) => {
             <Collapse component="li" in={openAdmin} timeout="auto" unmountOnExit>
                 <List disablePadding>
                     <ListItemButton className={classes.listSubItem} onClick={clickHandler}>
-                        <Link className={classes.linkAppBarMobile} to="/">
+                        <Link className={classes.linkAppBarMobile} to="/admin/usuarios">
                             <ListItemIcon className={classes.listItemIcon}>
                                 <Icon><Group /></Icon>
                             </ListItemIcon>
@@ -80,7 +80,7 @@ const MenuMobile = ({ clickHandler }) => {
                         </Link>
                     </ListItemButton>
                     <ListItemButton className={classes.listSubItem} onClick={clickHandler}>
-                        <Link className={classes.linkAppBarMobile} to="/">
+                        <Link className={classes.linkAppBarMobile} to="/admin/listaPedidos">
                             <ListItemIcon className={classes.listItemIcon}>
                                 <Icon><ShoppingCart /></Icon>
                             </ListItemIcon>
