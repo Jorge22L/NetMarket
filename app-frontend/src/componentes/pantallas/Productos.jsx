@@ -1,15 +1,51 @@
-import { Avatar, Button, Card, CardContent, CardMedia, Container, Grid, Typography } from '@mui/material';
+import { Avatar, Button, Card, CardContent, CardMedia, Container, Grid, Pagination, Typography } from '@mui/material';
 import useStyles from '../../theme/useStyles';
-import React from 'react';
-import { ProductoArray } from '../data/data_prueba';
+import { useEffect, useState } from 'react';
+// import { ProductoArray } from '../data/data_prueba';
 import { useNavigate } from 'react-router-dom';
+import { getProductos } from '../../actions/ProductoActions';
 
-const Productos = (props) => {
+const Productos = () => {
+
+    const[requestProductos, setRequestProductos] = useState({
+        pageIndex: 1,
+        pageSize: 2,
+        search: ""
+    })
+
+    const [paginadorProductos, setPaginadorProductos] = useState({
+        count: 0,
+        pageIndex: 0,
+        pageSize: 0,
+        pageCount: 0,
+        data: []
+    });
+
+    useEffect(() => {
+        const getListaProductos = async () => {
+            const response = await getProductos(requestProductos);
+            setPaginadorProductos(response);
+        }
+
+        getListaProductos();
+    }, [requestProductos]);
+
     const navigate = useNavigate();
     const classes = useStyles();
-    const miArray = ProductoArray;
+    //const miArray = ProductoArray;
+
+    if(!paginadorProductos.data){
+        return null;
+    }
     const verProducto = (id) => {
         navigate(`/detalleProducto/${id}`);
+    }
+
+    const handleChange = (event, value) => {
+        setRequestProductos((anterior) =>({
+            ...anterior,
+            pageIndex: value
+        }) )
     }
 
     return (
@@ -19,23 +55,23 @@ const Productos = (props) => {
             </Typography>
 
             <Grid container spacing={4}>
-            { miArray.map(data => (
-                <Grid item xs={12} sm={6} md={6} lg={3} key={data.key}>
+            { paginadorProductos.data.map(data => (
+                <Grid item xs={12} sm={6} md={6} lg={3} key={data.id}>
                     
                     <Card>
                         <CardMedia image="https://publiventa.pe/wp-content/uploads/2017/07/6T.png" 
                         title="Mi producto" className={classes.media}>
-                            <Avatar variant='square' className={classes.price}>${data.price}</Avatar>
+                            <Avatar variant='square' className={classes.price}>${data.precio}</Avatar>
                         </CardMedia>
                         <CardContent>
                             <Typography variant='h5' className={classes.text_card}>
-                                {data.titulo}
+                                {data.nombre}
                             </Typography>
                             <Button 
                                 variant='contained' 
                                 color='primary' 
                                 fullWidth
-                                onClick={() => verProducto(data.key)}>
+                                onClick={() => verProducto(data.id)}>
                                 Más detalles
                             </Button>
                         </CardContent>
@@ -43,6 +79,11 @@ const Productos = (props) => {
                 </Grid>
                 ))}
             </Grid>
+            <Pagination 
+                count={paginadorProductos.pageCount} 
+                page={paginadorProductos.pageIndex} 
+                onChange={handleChange}
+                />
         </Container>
     )
 }
