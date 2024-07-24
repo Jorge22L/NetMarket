@@ -1,11 +1,16 @@
 ﻿using BusinessLogic.Data;
 using BusinessLogic.Logic;
+using Core.Entities;
 using Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using WebApi.Dtos;
+using Microsoft.AspNetCore.Identity;
 using WebApi.Middleware;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace WebApi;
 
@@ -21,11 +26,34 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddScoped<ITokenService, TokenService>();
+
+        var builder = services.AddIdentityCore<Usuario>();
+        builder = new IdentityBuilder(builder.UserType, builder.Services);
+        builder.AddEntityFrameworkStores<SeguridadDbContext>();
+        builder.AddSignInManager<SignInManager<Usuario>>();
+
+        services.AddAuthentication( JwtBearerDefaults.AuthenticationScheme ).AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:Key"])),
+                ValidIssuer = Configuration["Token:Issuer"],
+                ValidateIssuer = true,
+                ValidateAudience = false
+            };
+        });
+
         services.AddAutoMapper(typeof(MappingProfiles));
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddDbContext<MarketDbContext>(opt =>
         {
             opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+        });
+        services.AddDbContext<SeguridadDbContext>(x =>
+        {
+            x.UseSqlServer(Configuration.GetConnectionString("IdentitySeguridad"));
         });
         services.AddTransient<IProductoRepository, ProductoRepository>();
         services.AddControllers();
@@ -54,8 +82,10 @@ public class Startup
         app.UseRouting();
         //CORS
         app.UseCors("CorsRule");
+
         app.UseAuthentication();
         app.UseAuthorization();
+
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();

@@ -1,4 +1,6 @@
 using BusinessLogic.Data;
+using Core.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebApi;
 namespace WebApi;
@@ -16,6 +18,12 @@ public class Program
                 var context = services.GetRequiredService<MarketDbContext>();
                 await context.Database.MigrateAsync();
                 await MarketDbContextData.CargarDataAsync(context, loggerFactory);
+
+                //Migracion para IdentityUser
+                var userManager = services.GetRequiredService<UserManager<Usuario>>();
+                var identityContext = services.GetRequiredService<SeguridadDbContext>();
+                await identityContext.Database.MigrateAsync();
+                await SeguridadContextData.SeedUserAsync(userManager);
             }
             catch (Exception e)
             {
