@@ -1,22 +1,26 @@
 import { Avatar, Container, Grid, Card, Icon, Typography, TextField, Button } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import useStyles from "../../theme/useStyles";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { registrarUsuario } from "../../actions/UsuarioAction";
 
 
 const clearUsuario = {
     nombre: '',
-    apellidos: '',
+    apellido: '',
     email: '',
     password: '',
+    username: '',
 }
 const RegistrarUsuario = () => {
+    const navigate = useNavigate();
     const [usuario, setUsuario] = useState({
         nombre: '',
-        apellidos: '',
+        apellido: '',
         email: '',
         password: '',
+        username: '',
     });
 
     const handleChange = (e) => {
@@ -28,8 +32,11 @@ const RegistrarUsuario = () => {
     }
 
     const guardarUsuario = () => {
-        console.log('usuario', usuario);
-        setUsuario(clearUsuario);
+        registrarUsuario(usuario).then(response => {
+            navigate('/');
+            console.log(`Response del servidor al guardar usuario: `, response);
+            window.localStorage.setItem('token', response.data.token);
+        })
     }
     const classes = useStyles();
     return ( 
@@ -56,15 +63,25 @@ const RegistrarUsuario = () => {
                                 </Grid>
                                 <Grid item xs={6} className={classes.gridmb}>
                                     <TextField
-                                        label="Apellidos"
+                                        label="Apellido"
                                         variant="outlined"
                                         fullWidth
-                                        name="apellidos"
-                                        value={usuario.apellidos}
+                                        name="apellido"
+                                        value={usuario.apellido}
                                         onChange={handleChange}
                                     />
                                 </Grid>
-                                <Grid item xs={12} className={classes.gridmb}>
+                                <Grid item xs={6} className={classes.gridmb}>
+                                    <TextField
+                                        label="Username"
+                                        variant="outlined"
+                                        fullWidth
+                                        name="username"
+                                        value={usuario.username}
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={6} className={classes.gridmb}>
                                     <TextField
                                         label="Email"
                                         variant="outlined"

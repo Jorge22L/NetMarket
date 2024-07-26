@@ -1,11 +1,44 @@
 import { Avatar, Button, Card, Container, Grid, Icon, TextField, Typography } from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
-import React from "react";
+import React, { useState } from "react";
 import useStyles from "../../theme/useStyles";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../../actions/UsuarioAction";
+
+const clearUsuario = {
+    email: '',
+    password: '',
+}
 
 const Login = () =>{
+    const navigate = useNavigate();
     const classes = useStyles();
+    const [usuario, setUsuario] = useState({
+        email: '',
+        password: '',
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setUsuario(prev =>({ 
+            ...prev, 
+            [name]: value 
+        }));
+    }
+
+    const loginUsuario = () => {
+        login(usuario).then(response => {
+            if(response.status === 200)
+            {
+                window.localStorage.setItem('token', response.data.token);
+                console.log("Login existoso: ",response.data);
+                navigate('/');
+            }
+            else{
+                console.log("Login fallido: ",response.data);
+            }
+        })
+    }
 
     return (
         <Container className={classes.containermt}>
@@ -24,6 +57,8 @@ const Login = () =>{
                                         variant="outlined"
                                         fullWidth
                                         type="email"
+                                        name="email"
+                                        onChange={handleChange}
                                     />
                                 </Grid>
                                 <Grid item xs={12} className={classes.gridmb} >
@@ -32,6 +67,8 @@ const Login = () =>{
                                         variant="outlined"
                                         fullWidth
                                         type="password"
+                                        name="password"
+                                        onChange={handleChange}
                                     />
                                 </Grid>
                                 <Grid item xs={12} className={classes.gridmb}>
@@ -39,6 +76,7 @@ const Login = () =>{
                                         variant="contained"
                                         fullWidth
                                         color="primary"
+                                        onClick={loginUsuario}
                                         >
                                         Login
                                     </Button>

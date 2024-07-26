@@ -16,9 +16,23 @@ import ListaProductos from './componentes/pantallas/admin/ListaProductos'
 import AgregarProducto from './componentes/pantallas/admin/AgregarProducto'
 import EditarProducto from './componentes/pantallas/admin/EditarProducto'
 import ListaPedidos from './componentes/pantallas/admin/ListaPedidos'
+import { useEffect, useState } from 'react'
+import { getUsuario } from './actions/UsuarioAction'
 
 
 function App() {
+  const [serverResponse, setServerResponse] = useState(false);
+
+  useEffect(() => {
+    if(!serverResponse)
+    {
+      getUsuario().then (response => {
+        setServerResponse(true);
+        console.log("Respuesta del servidor al pasar token: ",response);
+      })
+    }
+    
+  },[serverResponse]);
 
   return (
     <ThemeProvider theme={theme}>
