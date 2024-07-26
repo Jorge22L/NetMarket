@@ -4,6 +4,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import useStyles from "../../theme/useStyles";
 import { Link, useNavigate } from "react-router-dom";
 import { registrarUsuario } from "../../actions/UsuarioAction";
+import { useStateValue } from "../../contexto/store";
 
 
 const clearUsuario = {
@@ -14,6 +15,7 @@ const clearUsuario = {
     username: '',
 }
 const RegistrarUsuario = () => {
+    const [{sesionUsuario}, dispatch] = useStateValue();
     const navigate = useNavigate();
     const [usuario, setUsuario] = useState({
         nombre: '',
@@ -32,7 +34,7 @@ const RegistrarUsuario = () => {
     }
 
     const guardarUsuario = () => {
-        registrarUsuario(usuario).then(response => {
+        registrarUsuario(usuario, dispatch).then(response => {
             navigate('/');
             console.log(`Response del servidor al guardar usuario: `, response);
             window.localStorage.setItem('token', response.data.token);

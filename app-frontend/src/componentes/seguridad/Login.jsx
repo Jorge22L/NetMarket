@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import useStyles from "../../theme/useStyles";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../actions/UsuarioAction";
+import { useStateValue } from "../../contexto/store";
 
 const clearUsuario = {
     email: '',
@@ -11,6 +12,7 @@ const clearUsuario = {
 }
 
 const Login = () =>{
+    const [{sesionUsuario}, dispatch] = useStateValue();
     const navigate = useNavigate();
     const classes = useStyles();
     const [usuario, setUsuario] = useState({
@@ -27,7 +29,7 @@ const Login = () =>{
     }
 
     const loginUsuario = () => {
-        login(usuario).then(response => {
+        login(usuario, dispatch).then(response => {
             if(response.status === 200)
             {
                 window.localStorage.setItem('token', response.data.token);

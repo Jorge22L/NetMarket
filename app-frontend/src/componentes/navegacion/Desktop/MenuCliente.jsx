@@ -6,8 +6,10 @@ import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { useStateValue } from '../../../contexto/store';
 
 const MenuCliente = () => {
+    const [{sesionUsuario}, dispatch] = useStateValue();
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -35,7 +37,7 @@ const MenuCliente = () => {
                             className={classes.avatarPerfilAppBar} 
                             src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                         />
-                        Jose Perez
+                        {sesionUsuario ? (sesionUsuario.autenticado ? sesionUsuario.usuario.nombre + " " + sesionUsuario.usuario.apellido : "")  : ""}
                         <Icon className={classes.appBarDesktop}><KeyboardArrowDownIcon /></Icon>
                    </div>
                 </Button>

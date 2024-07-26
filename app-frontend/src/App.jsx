@@ -18,15 +18,17 @@ import EditarProducto from './componentes/pantallas/admin/EditarProducto'
 import ListaPedidos from './componentes/pantallas/admin/ListaPedidos'
 import { useEffect, useState } from 'react'
 import { getUsuario } from './actions/UsuarioAction'
+import { useStateValue } from './contexto/store'
 
 
 function App() {
+  const [{sesionUsuario}, dispatch] = useStateValue();
   const [serverResponse, setServerResponse] = useState(false);
 
   useEffect(() => {
     if(!serverResponse)
     {
-      getUsuario().then (response => {
+      getUsuario(dispatch).then (response => {
         setServerResponse(true);
         console.log("Respuesta del servidor al pasar token: ",response);
       })
