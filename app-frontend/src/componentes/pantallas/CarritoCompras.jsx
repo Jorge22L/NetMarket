@@ -1,17 +1,27 @@
-import React from 'react';
 import useStyles from '../../theme/useStyles';
-import { Button, CardMedia, Container, Divider, Grid, Icon, IconButton, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from '@mui/material';
+import { Button, CardMedia, Container, Divider, Grid, Icon, IconButton, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from '@mui/material';
 import { ProductoArray } from '../data/data_prueba';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router-dom';
+import { useStateValue } from '../../contexto/store';
 
 const CarritoCompras = () => {
+
+    const [{sesionCarritoCompra}, dispatch] = useStateValue();
+    console.log('carrito de compras: ', sesionCarritoCompra);
+
+    const productosCarrito = sesionCarritoCompra ? sesionCarritoCompra.items : [];
+    let suma = 0;
+    productosCarrito.forEach(prod => {
+        suma = suma + (prod.precio * prod.cantidad);
+    });
+
     const classes = useStyles();
     const navigate = useNavigate();
     const realizarCompra = () => {
         navigate('/procesoCompra');
     }
-    const miArray = ProductoArray;
+   
     return (
         <Container className={classes.containermt}>
             <Typography variant='h4' className={classes.text_title}>
@@ -23,39 +33,28 @@ const CarritoCompras = () => {
                     <TableContainer>
                         <Table>
                             <TableBody>
-                                {miArray.map(producto =>(
-                                    <TableRow key={producto.key}>
+                                {productosCarrito.map(item =>(
+                                    <TableRow key={item.id}>
                                         <TableCell>
                                             <CardMedia className={classes.imgProductoCC}
                                                 image="https://publiventa.pe/wp-content/uploads/2017/07/6T.png"
-                                                title="Mi imagen">
+                                                title={item.producto}>
                                             </CardMedia>
                                         </TableCell>
                                         <TableCell>
                                             <Typography className={classes.text_detalle}>
-                                                {producto.titulo}
+                                                {item.producto}
                                             </Typography>
                                         </TableCell>
                                         <TableCell>
                                             <Typography className={classes.text_detalle}>
-                                                ${producto.price}
+                                                ${item.precio}
                                             </Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <TextField
-                                                select
-                                                value='outlined'
-                                                size='small'
-                                            >
-                                                <MenuItem value={1}>1</MenuItem>
-                                                <MenuItem value={2}>2</MenuItem>
-                                                <MenuItem value={3}>3</MenuItem>
-                                                <MenuItem value={4}>4</MenuItem>
-                                                <MenuItem value={5}>5</MenuItem>
-                                                <MenuItem value={6}>6</MenuItem>
-                                                <MenuItem value={7}>7</MenuItem>
-                                                <MenuItem value={8}>8</MenuItem>
-                                            </TextField>
+                                            <Typography className={classes.text_detalle}>
+                                                {item.cantidad}
+                                            </Typography>
                                         </TableCell>
 
                                         <TableCell>
@@ -73,10 +72,10 @@ const CarritoCompras = () => {
                 <Grid item lg={3} md={2} sm={6} xs={12}>
                     <Paper variant='outlined' square className={classes.paperPadding}>
                         <Typography variant='h6' className={classes.text_carrito}>
-                            SubTotal ({miArray.length}) Productos
+                            SubTotal ({productosCarrito.length}) Productos
                         </Typography>
                         <Typography>
-                            $143.66
+                            ${suma}
                         </Typography>
                         <Divider className={classes.gridmb} />
                         <Button 

@@ -1,4 +1,3 @@
-import { type } from '@testing-library/user-event/dist/cjs/utility/type.js';
 import HttpCliente from '../servicios/HttpClient';
 import axios from 'axios';
 

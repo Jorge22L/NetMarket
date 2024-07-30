@@ -1,4 +1,3 @@
-import HttpCliente from '../servicios/HttpClient';
 import axios from 'axios';
 
 const instancia = axios.create();
@@ -16,3 +15,17 @@ export const getProductos = (request) => {
             })
     })
 };
+
+export const getProducto = id => {
+    return new Promise( (resolve, reject ) => {
+        instancia.get(`/api/Producto/${id.id}`)
+        .then(response => {
+            resolve(response.data);
+        })
+        .catch(error => {
+            reject(error.response);
+        })
+
+        console.log(`/api/Producto/${id.id}`);
+    })
+}

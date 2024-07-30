@@ -4,8 +4,12 @@ import { useEffect, useState } from 'react';
 // import { ProductoArray } from '../data/data_prueba';
 import { useNavigate } from 'react-router-dom';
 import { getProductos } from '../../actions/ProductoActions';
+import { addItem } from '../../actions/CarritoCompraAction';
+import { useStateValue } from '../../contexto/store';
 
 const Productos = () => {
+
+    const [ {sesionCarritoCompra}, dispatch] = useStateValue();
 
     const[requestProductos, setRequestProductos] = useState({
         pageIndex: 1,
@@ -37,8 +41,10 @@ const Productos = () => {
     if(!paginadorProductos.data){
         return null;
     }
-    const verProducto = (id) => {
-        navigate(`/detalleProducto/${id}`);
+    const verProducto = async (item) => {
+        //await addItem(sesionCarritoCompra, item, dispatch)
+        console.log('ver producto: ', item.id);
+        navigate(`/detalleProducto/${item.id}`);
     }
 
     const handleChange = (event, value) => {
@@ -71,7 +77,7 @@ const Productos = () => {
                                 variant='contained' 
                                 color='primary' 
                                 fullWidth
-                                onClick={() => verProducto(data.id)}>
+                                onClick={() => verProducto(data)}>
                                 Más detalles
                             </Button>
                         </CardContent>

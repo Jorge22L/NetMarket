@@ -3,7 +3,7 @@ import { ThemeProvider } from '@emotion/react'
 import theme from './theme/theme'
 import RegistrarUsuario from './componentes/seguridad/RegistrarUsuario'
 import MenuAppBar from './componentes/navegacion/MenuAppBar'
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Productos from './componentes/pantallas/Productos'
 import DetalleProducto from './componentes/pantallas/DetalleProducto'
 import CarritoCompras from './componentes/pantallas/CarritoCompras'
@@ -19,22 +19,45 @@ import ListaPedidos from './componentes/pantallas/admin/ListaPedidos'
 import { useEffect, useState } from 'react'
 import { getUsuario } from './actions/UsuarioAction'
 import { useStateValue } from './contexto/store'
+import { v4 as uuidv4 } from 'uuid'
+import { getCarritoCompra } from './actions/CarritoCompraAction'
 
 
 function App() {
-  const [{sesionUsuario}, dispatch] = useStateValue();
+  const [{ sesionUsuario }, dispatch] = useStateValue();
   const [serverResponse, setServerResponse] = useState(false);
 
-  useEffect(() => {
-    if(!serverResponse)
-    {
-      getUsuario(dispatch).then (response => {
-        setServerResponse(true);
-        console.log("Respuesta del servidor al pasar token: ",response);
-      })
+  useEffect( () => {
+    async function fetchData() {
+      let carritoCompraId = window.localStorage.getItem('carrito');
+
+      if(!carritoCompraId)
+      {
+        carritoCompraId = uuidv4();
+        window.localStorage.setItem("carrito", carritoCompraId);
+
+      }
+
+      if(!serverResponse)
+      {
+        try
+        {
+          await getUsuario(dispatch);
+          await getCarritoCompra(dispatch, carritoCompraId);
+          setServerResponse(true);
+        }
+        catch(error)
+        {
+          console.error("Failed to fetch data: ", error);
+        }
+        
+      }
+      
     }
+
+    fetchData();
     
-  },[serverResponse]);
+  }, [serverResponse]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -58,7 +81,7 @@ function App() {
         </Routes>
       </Router>
     </ThemeProvider>
-    
+
   )
 }
 
