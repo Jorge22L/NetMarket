@@ -186,7 +186,8 @@ const useStyles = makeStyles({
         marginRight: "8px !important",
     },
     formControl:{
-        margin: 12
+        margin: theme.spacing(1) + " !important",
+        minWidth: "120px !important",
     },
     gridLR:{
         paddingLeft: 30,

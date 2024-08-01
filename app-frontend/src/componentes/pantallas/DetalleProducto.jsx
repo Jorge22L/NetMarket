@@ -60,7 +60,7 @@ const DetalleProducto = () => {
             <Grid container spacing={4}>
                 <Grid item lg={8} md={8} sm={12} xs={12}>
                     <Paper variant='outlined' square className={classes.PaperImg}>
-                        <CardMedia image="https://publiventa.pe/wp-content/uploads/2017/07/6T.png"
+                        <CardMedia image={productoSeleccionado.imagen ? productoSeleccionado.imagen : 'https://via.placeholder.com/300' }
                             title={productoSeleccionado.descripcion}
                             className={classes.mediaDetalle}
                         />

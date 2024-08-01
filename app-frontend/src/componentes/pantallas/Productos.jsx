@@ -13,7 +13,7 @@ const Productos = () => {
 
     const[requestProductos, setRequestProductos] = useState({
         pageIndex: 1,
-        pageSize: 2,
+        pageSize: 3,
         search: ""
     })
 
@@ -65,8 +65,8 @@ const Productos = () => {
                 <Grid item xs={12} sm={6} md={6} lg={3} key={data.id}>
                     
                     <Card>
-                        <CardMedia image="https://publiventa.pe/wp-content/uploads/2017/07/6T.png" 
-                        title="Mi producto" className={classes.media}>
+                        <CardMedia image={data.imagen ? data.imagen : 'https://source.unsplash.com/random'} 
+                        title={data.nombre} className={classes.media}>
                             <Avatar variant='square' className={classes.price}>${data.precio}</Avatar>
                         </CardMedia>
                         <CardContent>

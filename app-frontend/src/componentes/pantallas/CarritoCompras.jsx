@@ -37,7 +37,7 @@ const CarritoCompras = () => {
                                     <TableRow key={item.id}>
                                         <TableCell>
                                             <CardMedia className={classes.imgProductoCC}
-                                                image="https://publiventa.pe/wp-content/uploads/2017/07/6T.png"
+                                                image={item.imagen ? item.imagen : 'https://via.placeholder.com/300' }
                                                 title={item.producto}>
                                             </CardMedia>
                                         </TableCell>
