@@ -21,9 +21,10 @@ public class Program
 
                 //Migracion para IdentityUser
                 var userManager = services.GetRequiredService<UserManager<Usuario>>();
+                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                 var identityContext = services.GetRequiredService<SeguridadDbContext>();
                 await identityContext.Database.MigrateAsync();
-                await SeguridadContextData.SeedUserAsync(userManager);
+                await SeguridadContextData.SeedUserAsync(userManager, roleManager);
             }
             catch (Exception e)
             {

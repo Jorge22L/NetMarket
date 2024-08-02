@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using StackExchange.Redis;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace WebApi;
 
@@ -30,7 +31,10 @@ public class Startup
         services.AddScoped<ITokenService, TokenService>();
 
         var builder = services.AddIdentityCore<Usuario>();
+
         builder = new IdentityBuilder(builder.UserType, builder.Services);
+        builder.AddRoles<IdentityRole>();
+
         builder.AddEntityFrameworkStores<SeguridadDbContext>();
         builder.AddSignInManager<SignInManager<Usuario>>();
 
@@ -48,6 +52,8 @@ public class Startup
 
         services.AddAutoMapper(typeof(MappingProfiles));
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        services.AddScoped(typeof(IGenericSeguridadRepository<>), typeof(GenericSeguridadRepository<>));
+
         services.AddDbContext<MarketDbContext>(opt =>
         {
             opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
@@ -62,6 +68,9 @@ public class Startup
             var configuration = ConfigurationOptions.Parse(Configuration.GetConnectionString("Redis"), true);
             return ConnectionMultiplexer.Connect(configuration);
         });
+
+        services.TryAddSingleton<TimeProvider>();
+
         services.AddTransient<IProductoRepository, ProductoRepository>();
         services.AddControllers();
 

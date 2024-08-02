@@ -10,7 +10,7 @@ namespace BusinessLogic.Data
 {
     public class SeguridadContextData
     {
-        public static async Task SeedUserAsync(UserManager<Usuario> userManager) 
+        public static async Task SeedUserAsync(UserManager<Usuario> userManager, RoleManager<IdentityRole> roleManager) 
         {
             if(!userManager.Users.Any())
             {
@@ -26,7 +26,8 @@ namespace BusinessLogic.Data
                         Ciudad = "Managua",
                         CodigoPostal = "14057",
                         Departamento = "Managua"
-                    }
+                    },
+                    Imagen = "",
                 };
 
                 var result = await userManager.CreateAsync(usuario, "Jorgem2025$");
@@ -34,6 +35,17 @@ namespace BusinessLogic.Data
                 {
                     throw new Exception($"Falló la creación del usuario: {string.Join(", ", result.Errors.Select(e => e.Description))}");
                 }
+            }
+
+            if(!roleManager.Roles.Any())
+            {
+                var rol = new IdentityRole()
+                {
+                    Name = "ADMIN",
+                };
+
+                await roleManager.CreateAsync(rol);
+                
             }
         }
     }

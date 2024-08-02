@@ -23,7 +23,7 @@ namespace BusinessLogic.Logic
             _config = config;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Token:Key"]));
         }
-        public string CreateToken(Usuario usuario)
+        public string CreateToken(Usuario usuario, IList<string> roles)
         {
             var claims = new List<Claim>
             {
@@ -33,6 +33,14 @@ namespace BusinessLogic.Logic
                 new Claim(JwtRegisteredClaimNames.Email, usuario.Email),
                 new Claim("username", usuario.UserName)
             };
+
+            if (roles != null && roles.Count > 0) 
+            {
+                foreach (var role in roles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role));
+                }
+            }
 
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature);
             var tokenConfiguration = new SecurityTokenDescriptor
