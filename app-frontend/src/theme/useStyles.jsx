@@ -39,6 +39,12 @@ const useStyles = makeStyles({
         marginBottom: '20px !important',
         backgroundColor: '#f2f2f2',
     },
+    flexgrid:{
+        display: "flex !important",
+        alignItems: "center !important",
+        justifyContent: "space-between !important",
+        marginBottom: "20px !important"
+    },
     link: {
         marginTop: '8px !important',
         fontSize: "1.1rem !important",
@@ -224,10 +230,13 @@ const useStyles = makeStyles({
         margin: "-25px auto 15px",
         width: 0
     },
+    imageUploaderPerfil : {
+        width: 0 + " !important",
+    },
     avatarPerfil : {
-        width: 130,
-        height: 130,
-        backgroundColor: "#0f80aa"
+        width: 80 + "px !important",
+        height: 80 + "px !important",
+        backgroundColor: "#0f80aa !important"
     },
     perfilSection:{
         backgroundColor: "#f2f2f2",

@@ -2,10 +2,15 @@ import { useState } from 'react';
 import useStyles from '../../../theme/useStyles';
 import { Avatar, Collapse, Divider, Icon, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { AdminPanelSettings, ExitToApp, Group, KeyboardArrowDown, Person, ShoppingCart, Storefront } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useStateValue } from '../../../contexto/store';
 
 const MenuMobile = ({ clickHandler }) => {
+    const imagenDefault = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+    const navigate = useNavigate();
     const classes = useStyles();
+
+    const [{sesionUsuario}, dispatch] = useStateValue();
 
     const [openCliente, setOpenCliente] = useState(false);
     const [openAdmin, setOpenAdmin] = useState(false);
@@ -18,6 +23,19 @@ const MenuMobile = ({ clickHandler }) => {
         setOpenAdmin(!openAdmin);
     }
 
+    const cerrarSesion = () =>{
+        clickHandler();
+        localStorage.removeItem("token");
+        dispatch({
+            type: "CERRAR_SESION",
+            nuevoUsuario: null,
+            autenticado: false
+        });
+
+        navigate("/login");
+
+    }
+
     return (
         <>
             <ListItemButton onClick={handleClickCliente} className={classes.listItem}>
@@ -25,8 +43,9 @@ const MenuMobile = ({ clickHandler }) => {
                     <Avatar
                         alt="mi imagen"
                         className={classes.avatarPerfilAppBar}
-                        src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
-                    <ListItemText>Juan Perez</ListItemText>
+                        src={sesionUsuario ? (sesionUsuario.autenticado ? sesionUsuario.usuario.imagen : imagenDefault) : imagenDefault} 
+                        />
+                    <ListItemText>{sesionUsuario ? (sesionUsuario.autenticado ? sesionUsuario.usuario.nombre + " " + sesionUsuario.usuario.apellido : "INVITADO")  : "INVITADO"}</ListItemText>
                     <Icon><KeyboardArrowDown /></Icon>
                 </div>
             </ListItemButton>
@@ -40,7 +59,7 @@ const MenuMobile = ({ clickHandler }) => {
                             <ListItemText>Mi Perfil</ListItemText>
                         </Link>
                     </ListItemButton>
-                    <ListItemButton className={classes.listSubItem} onClick={clickHandler}>
+                    <ListItemButton className={classes.listSubItem} onClick={cerrarSesion}>
                         <Link className={classes.linkAppBarMobile} to="/">
                             <ListItemIcon className={classes.listItemIcon}>
                                 <Icon><ExitToApp /></Icon>

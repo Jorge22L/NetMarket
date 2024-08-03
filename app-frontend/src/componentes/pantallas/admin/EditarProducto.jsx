@@ -9,6 +9,8 @@ import { v4 as uuidv4 } from 'uuid';
 const EditarProducto = () => {
     const id = useParams();
     const navigate = useNavigate();
+
+    
     const [producto, setProducto] = useState({
         id: 0,
         nombre: '',

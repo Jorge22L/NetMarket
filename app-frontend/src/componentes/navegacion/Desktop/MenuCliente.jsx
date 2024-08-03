@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import useStyles from '../../../theme/useStyles';
-import { Avatar, Button, Icon, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
-import { Link } from 'react-router-dom'
+import { Avatar, Button, ButtonBase, Icon, ListItem, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom'
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import PersonIcon from '@mui/icons-material/Person';
@@ -9,6 +9,8 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useStateValue } from '../../../contexto/store';
 
 const MenuCliente = () => {
+    const imagenDefault = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+    const navigate = useNavigate();
     const [{sesionUsuario}, dispatch] = useStateValue();
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -19,6 +21,19 @@ const MenuCliente = () => {
 
     const handleClick = (e) => {
         setAnchorEl(e.currentTarget);
+    }
+
+    const cerrarSesion = () =>{
+        handleClose();
+        localStorage.removeItem("token");
+        dispatch({
+            type: "CERRAR_SESION",
+            nuevoUsuario: null,
+            autenticado: false
+        });
+
+        navigate("/login");
+
     }
     return (
         <>
@@ -35,9 +50,9 @@ const MenuCliente = () => {
                        <Avatar
                             alt="mi perfil"
                             className={classes.avatarPerfilAppBar} 
-                            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                            src={sesionUsuario ? (sesionUsuario.autenticado ? sesionUsuario.usuario.imagen : imagenDefault) : imagenDefault}
                         />
-                        {sesionUsuario ? (sesionUsuario.autenticado ? sesionUsuario.usuario.nombre + " " + sesionUsuario.usuario.apellido : "")  : ""}
+                        {sesionUsuario ? (sesionUsuario.autenticado ? sesionUsuario.usuario.nombre + " " + sesionUsuario.usuario.apellido : "")  : "INVITADO"}
                         <Icon className={classes.appBarDesktop}><KeyboardArrowDownIcon /></Icon>
                    </div>
                 </Button>
@@ -61,14 +76,15 @@ const MenuCliente = () => {
                                 </ListItemText>
                             </Link>
                         </MenuItem>
-                        <MenuItem className={classes.listItem} onClick={handleClose}>
+                        <MenuItem className={classes.listItem} onClick={cerrarSesion}>
                             <Link className={classes.linkAppBarMobile} to="/">
                                 <ListItemIcon className={classes.listItemIcon}>
                                     <Icon><ExitToAppIcon /></Icon>
                                 </ListItemIcon>
                                 <ListItemText>
-                                    Cerrar Sesión
+                                        Cerrar Sesión
                                 </ListItemText>
+                                
                             </Link>
                         </MenuItem>
                 </Menu>

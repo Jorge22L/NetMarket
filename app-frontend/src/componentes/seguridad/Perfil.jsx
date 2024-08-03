@@ -1,12 +1,87 @@
-import React from 'react';
 import useStyles from '../../theme/useStyles';
 import { Avatar, Button, Container, Divider, Grid, Icon, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import ImageUploader from 'react-images-upload';
 import CheckIcon from '@mui/icons-material/Check';
 import { useNavigate } from 'react-router-dom';
+import { useStateValue } from '../../contexto/store';
+import { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { actualizarUsuario } from '../../actions/UsuarioAction';
 
 const Perfil = () => {
+    const [{ sesionUsuario }, dispatch] = useStateValue();
+    const imagenDefault = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+
+    const [usuario, setUsuario] = useState({
+        id: "",
+        nombre: "",
+        apellido: "",
+        imagen: "",
+        email: "",
+        password: "",
+        file: "",
+        imagenTemporal: ""
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setUsuario((anterior) => ({
+            ...anterior,
+            [name]: value
+        }))
+    }
+
+    useEffect(() => {
+        if (sesionUsuario) {
+            setUsuario(sesionUsuario.usuario);
+        }
+    }, [sesionUsuario])
+
+    const subirImagen = (imagen) => {
+        let foto = imagen[0];
+        let fotoUrl = "";
+
+        try {
+            fotoUrl = URL.createObjectURL(foto);
+        }
+        catch (e) {
+            console.log(e);
+        }
+
+        setUsuario((anterior) => ({
+            ...anterior,
+            file: foto,
+            imagenTemporal: fotoUrl
+        }));
+    }
+
+    const guardarUsuario = (e) => {
+        e.preventDefault();
+        
+        actualizarUsuario(sesionUsuario.usuario.id, usuario, dispatch)
+            .then(response => {
+                if (response.status === 200) {
+                    window.localStorage.setItem("token", response.data.token);
+                    navigate("/");
+                }
+                
+            })
+            .catch(error => {
+                console.log(error);
+                console.log("usuario: ", usuario);
+                dispatch({
+                    type: "OPEN_SNACKBAR",
+                    openMensaje: {
+                        open: true,
+                        mensaje: "Error al actualizar el usuario"
+                    }
+                });
+                
+            })
+            
+    }
+    const keyImage = uuidv4();
     const classes = useStyles();
     const navigate = useNavigate();
     const verDetalles = () => {
@@ -21,28 +96,36 @@ const Perfil = () => {
                         Perfil de Usuario
                     </Typography>
                     <form onSubmit={(e) => e.preventDefault()} className={classes.form}>
-                        <ImageUploader
-                            withIcon={false}
-                            buttonStyles={{ borderRadius: "50%", padding: 10, margin: 0, position: "absolute", bottom: 15, left: 15 }}
-                            className={classes.imageUploader}
-                            buttonText={<Icon><AddAPhotoIcon /></Icon>}
-                            label={<Avatar alt='mi perfil' className={classes.avatarPerfil}
-                                src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png' />}
-                            imgExtension={[".jpg", ".gif", ".png", ".gif"]}
-                            maxFileSize={5242880}
-                        />
+                        <Grid container spacing={2}>
+                            <Grid item sm={6} xs={12} className={classes.flexgrid}>
+                                <Avatar alt='mi perfil'
+                                    className={classes.avatarPerfil}
+                                    src={usuario.imagenTemporal ? usuario.imagenTemporal : (usuario.imagen ? usuario.imagen : imagenDefault)}
+                                />
 
-                        <TextField variant='outlined' label='Nombre' fullWidth className={classes.gridmb} value={"JORGE"} />
-                        <TextField variant='outlined' label='Apellido' fullWidth className={classes.gridmb} value={"PEREZ"} />
-                        <TextField variant='outlined' label='Email' fullWidth className={classes.gridmb} value={"QpWJZ@example.com"} />
+                                <ImageUploader
+                                    withIcon={false}
+                                    onChange={subirImagen}
+                                    className={classes.imageUploaderPerfil}
+                                    buttonText="Seleccionar imagen"
+                                    imgExtension={[".jpg", ".gif", ".png", ".gif"]}
+                                    maxFileSize={5242880}
+                                />
+                            </Grid>
+                        </Grid>
+
+                        <TextField variant='outlined' name='nombre' label='Nombre' fullWidth className={classes.gridmb} value={usuario.nombre} onChange={handleChange} />
+                        <TextField variant='outlined' name='apellido' label='Apellido' fullWidth className={classes.gridmb} value={usuario.apellido} onChange={handleChange} />
+                        <TextField variant='outlined' name='email' label='Email' fullWidth className={classes.gridmb} value={usuario.email} onChange={handleChange} />
 
                         <Divider className={classes.divider} />
-                        <TextField variant='outlined' label='Password' fullWidth className={classes.gridmb} />
-                        <TextField variant='outlined' label='Confirmar Password' fullWidth className={classes.gridmb} />
+                        <TextField type='password' variant='outlined' name='password' label='Password' fullWidth className={classes.gridmb} onChange={handleChange} />
+                        <TextField type='password' variant='outlined' label='Confirmar Password' fullWidth className={classes.gridmb} />
                         <Button
                             variant='contained'
                             color='primary'
                             fullWidth
+                            onClick={guardarUsuario}
                         >
                             Actualizar
                         </Button>

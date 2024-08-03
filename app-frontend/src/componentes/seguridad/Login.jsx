@@ -1,6 +1,6 @@
 import { Avatar, Button, Card, Container, Grid, Icon, TextField, Typography } from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
-import React, { useState } from "react";
+import { useState } from "react";
 import useStyles from "../../theme/useStyles";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../actions/UsuarioAction";
@@ -36,9 +36,16 @@ const Login = () =>{
                 console.log("Login existoso: ",response.data);
                 navigate('/');
             }
-            else{
-                console.log("Login fallido: ",response.data);
-            }
+        })
+        .catch(error => {
+            dispatch({
+                type: "OPEN_SNACKBAR",
+                openMensaje: {
+                    open: true,
+                    mensaje: "El email o la contraseña son incorrectos",
+                }
+            });
+            console.log("Login fallido: ",error);
         })
     }
 

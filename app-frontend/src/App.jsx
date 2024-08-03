@@ -21,10 +21,11 @@ import { getUsuario } from './actions/UsuarioAction'
 import { useStateValue } from './contexto/store'
 import { v4 as uuidv4 } from 'uuid'
 import { getCarritoCompra } from './actions/CarritoCompraAction'
+import { Snackbar } from '@mui/material'
 
 
 function App() {
-  const [{ sesionUsuario }, dispatch] = useStateValue();
+  const [{ sesionUsuario, openSnackBar }, dispatch] = useStateValue();
   const [serverResponse, setServerResponse] = useState(false);
 
   useEffect( () => {
@@ -40,27 +41,37 @@ function App() {
 
       if(!serverResponse)
       {
-        try
-        {
+      
           await getUsuario(dispatch);
           await getCarritoCompra(dispatch, carritoCompraId);
           setServerResponse(true);
-        }
-        catch(error)
-        {
-          console.error("Failed to fetch data: ", error);
-        }
-        
       }
       
     }
 
     fetchData();
     
-  }, [serverResponse]);
+  }, [dispatch, serverResponse]);
 
   return (
     <ThemeProvider theme={theme}>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "center"}}
+        open={openSnackBar ? openSnackBar.open : false}
+        autoHideDuration={3000}
+        ContentProps={{"aria-describedby": "message-id"}}
+        message={<span id="message-id">{openSnackBar ? openSnackBar.mensaje : ""}</span>}
+        onClose={() => dispatch({
+            type: "OPEN_SNACKBAR",
+            openMensaje: {
+              open: false,
+              mensaje: "",
+            }
+          })
+        }
+      >
+
+      </Snackbar>
       <Router>
         <MenuAppBar />
         <Routes>
